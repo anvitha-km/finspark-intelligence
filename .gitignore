@@ -1,5 +1,9 @@
+node_modules/
 *.mp4
 *.pptx
 *.ppt
 ~$*
 server/finspark.db
+*.db-shm
+*.db-wal
+.env
