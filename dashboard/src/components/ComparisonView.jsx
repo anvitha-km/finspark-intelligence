@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, Legend, Cell
+  Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 
 import API_URL from '../config';
