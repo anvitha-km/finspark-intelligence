@@ -1,3 +1,4 @@
+import API_URL from '../config';
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
@@ -11,7 +12,7 @@ export default function FunnelView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/analytics/funnel/loan-origination')
+    fetch(`${API_URL}/api/analytics/funnel/loan-origination`)
       .then(r => r.json())
       .then(d => { setData(d.funnel); setLoading(false); });
   }, []);

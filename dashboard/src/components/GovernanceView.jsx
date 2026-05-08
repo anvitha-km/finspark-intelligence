@@ -1,3 +1,4 @@
+import API_URL from '../config';
 import React, { useEffect, useState } from 'react';
 
 export default function GovernanceView() {
@@ -8,8 +9,8 @@ export default function GovernanceView() {
 
   const load = () => {
     Promise.all([
-      fetch('http://localhost:4000/api/governance/consent').then(r => r.json()),
-      fetch('http://localhost:4000/api/governance/audit-log').then(r => r.json())
+      fetch(`${API_URL}/api/governance/consent`).then(r => r.json()),
+      fetch(`${API_URL}/api/governance/audit-log`).then(r => r.json())
     ]).then(([c, a]) => { setTenants(c.tenants); setLogs(a.logs); setLoading(false); });
   };
 
@@ -17,7 +18,7 @@ export default function GovernanceView() {
 
   const toggle = async (tenantId, field, value) => {
     setSaving(tenantId);
-    await fetch(`http://localhost:4000/api/governance/consent/${tenantId}`, {
+    await fetch(`${API_URL}/api/governance/consent/${tenantId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ [field]: value ? 1 : 0, changedBy: 'admin' })

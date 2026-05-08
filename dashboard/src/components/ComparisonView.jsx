@@ -4,7 +4,8 @@ import {
   Tooltip, ResponsiveContainer, Legend, Cell
 } from 'recharts';
 
-const API = 'http://localhost:4000';
+import API_URL from '../config';
+const API = API_URL;
 
 const TENANT_COLORS = {
   tenant_a: '#6366f1',

@@ -1,3 +1,4 @@
+import API_URL from '../config';
 import React, { useEffect, useState } from 'react';
 
 export default function LicenseView() {
@@ -5,7 +6,7 @@ export default function LicenseView() {
   const [loading, setLoading]   = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/analytics/license-usage')
+    fetch(`${API_URL}/api/analytics/license-usage`)
       .then(r => r.json())
       .then(d => { setFeatures(d.features); setLoading(false); });
   }, []);

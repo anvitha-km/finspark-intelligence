@@ -1,3 +1,4 @@
+import API_URL from '../config';
 import React, { useEffect, useState } from 'react';
 
 const TENANTS = ['tenant_a', 'tenant_b', 'tenant_c'];
@@ -15,7 +16,7 @@ export default function HeatmapView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/analytics/heatmap')
+    fetch(`${API_URL}/api/analytics/heatmap`)
       .then(r => r.json())
       .then(d => { setData(d.heatmap); setLoading(false); });
   }, []);

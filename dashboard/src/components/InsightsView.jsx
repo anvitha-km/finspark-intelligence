@@ -4,7 +4,8 @@ import {
   Tooltip, ResponsiveContainer, Legend, ReferenceLine
 } from 'recharts';
 
-const API = 'http://localhost:4000';
+import API_URL from '../config';
+const API = API_URL;
 
 export default function InsightsView() {
   const [licenseData, setLicenseData]   = useState([]);
