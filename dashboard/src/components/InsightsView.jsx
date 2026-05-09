@@ -35,7 +35,7 @@ export default function InsightsView({ user }) {
         setError(err.message);
         setLoading(false);
       });
-  }, []);
+  }, [user]);
 
   if (loading) return <div className="loading-state">Generating insights from live data…</div>;
   if (error)   return <div className="loading-state" style={{ color: 'var(--red)' }}>Error: {error}</div>;
