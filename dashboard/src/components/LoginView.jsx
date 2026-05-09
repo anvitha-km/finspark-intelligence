@@ -101,9 +101,11 @@ export default function LoginView({ onLogin }) {
 
   return (
     <div style={{
-      height: '100vh', width: '100vw',
+      minHeight: '100vh', width: '100vw',
       background: 'var(--bg-primary)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '40px 0',
+      boxSizing: 'border-box',
       fontFamily: 'Inter, sans-serif'
     }}>
       <div style={{ width: '100%', maxWidth: 420, padding: '0 24px' }}>
