@@ -7,15 +7,19 @@ const STEP_LABELS = {
   'document-upload': 'Doc Upload', 'credit-check': 'Credit Check', 'approval': 'Approval'
 };
 
-export default function FunnelView() {
+export default function FunnelView({ user }) {
   const [data, setData]       = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/analytics/funnel/loan-origination`)
+    const url = user?.role === 'tenant'
+      ? `${API_URL}/api/analytics/funnel/loan-origination?tenantId=${user.tenant}`
+      : `${API_URL}/api/analytics/funnel/loan-origination`;
+      
+    fetch(url)
       .then(r => r.json())
       .then(d => { setData(d.funnel); setLoading(false); });
-  }, []);
+  }, [user]);
 
   if (loading) return <div className="loading-state">Loading funnel data…</div>;
 

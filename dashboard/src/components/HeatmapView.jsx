@@ -1,8 +1,6 @@
 import API_URL from '../config';
 import React, { useEffect, useState } from 'react';
 
-const TENANTS = ['tenant_a', 'tenant_b', 'tenant_c'];
-
 function getCellClass(count) {
   if (count === 0) return 'level-0';
   if (count < 20)  return 'level-1';
@@ -11,15 +9,23 @@ function getCellClass(count) {
   return 'level-4';
 }
 
-export default function HeatmapView() {
+export default function HeatmapView({ user }) {
   const [data, setData]       = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const TENANTS = user?.role === 'tenant' 
+    ? [user.tenant] 
+    : ['tenant_a', 'tenant_b', 'tenant_c', 'tenant_d', 'tenant_e'];
+
   useEffect(() => {
-    fetch(`${API_URL}/api/analytics/heatmap`)
+    const url = user?.role === 'tenant' 
+      ? `${API_URL}/api/analytics/heatmap?tenantId=${user.tenant}`
+      : `${API_URL}/api/analytics/heatmap`;
+      
+    fetch(url)
       .then(r => r.json())
       .then(d => { setData(d.heatmap); setLoading(false); });
-  }, []);
+  }, [user]);
 
   // Build feature list and lookup map
   const features = [...new Set(data.map(d => d.feature_id))];

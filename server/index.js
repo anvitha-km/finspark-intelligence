@@ -1,11 +1,11 @@
-import express    from 'express';
-import cors       from 'cors';
-import rateLimit  from 'express-rate-limit';
+import express from 'express';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import { initDB, getDBStats, enforceRetention } from './db.js';
-import eventsRouter     from './routes/events.js';
-import analyticsRouter  from './routes/analytics.js';
+import eventsRouter from './routes/events.js';
+import analyticsRouter from './routes/analytics.js';
 import governanceRouter from './routes/governance.js';
-import syncRouter       from './routes/sync.js';
+import syncRouter from './routes/sync.js';
 
 const app = express();
 
@@ -32,12 +32,12 @@ app.use(express.json({ limit: '5mb' }));
 
 // Strict limiter — for event ingestion
 const eventLimiter = rateLimit({
-  windowMs:         60 * 1000,  // 1 minute window
-  max:              60,          // max 60 requests per IP per minute
-  standardHeaders:  true,        // return rate limit info in RateLimit-* headers
-  legacyHeaders:    false,
+  windowMs: 60 * 1000,  // 1 minute window
+  max: 60,          // max 60 requests per IP per minute
+  standardHeaders: true,        // return rate limit info in RateLimit-* headers
+  legacyHeaders: false,
   message: {
-    error:   'Too many requests',
+    error: 'Too many requests',
     message: 'Event ingestion rate limit exceeded. Max 60 requests/minute per IP.',
     retryAfter: '60 seconds'
   },
@@ -49,12 +49,12 @@ const eventLimiter = rateLimit({
 
 // Relaxed limiter — for analytics dashboard reads
 const analyticsLimiter = rateLimit({
-  windowMs:         60 * 1000,  // 1 minute window
-  max:              300,         // 300 requests/min — generous for dashboard polling
-  standardHeaders:  true,
-  legacyHeaders:    false,
+  windowMs: 60 * 1000,  // 1 minute window
+  max: 300,         // 300 requests/min — generous for dashboard polling
+  standardHeaders: true,
+  legacyHeaders: false,
   message: {
-    error:   'Too many requests',
+    error: 'Too many requests',
     message: 'Analytics rate limit exceeded. Max 300 requests/minute per IP.'
   }
 });
@@ -66,9 +66,9 @@ app.use((req, res, next) => {
 
   res.on('finish', () => {
     const duration = Date.now() - start;
-    const status   = res.statusCode;
-    const color    = status < 400 ? '\x1b[32m' : status < 500 ? '\x1b[33m' : '\x1b[31m';
-    const reset    = '\x1b[0m';
+    const status = res.statusCode;
+    const color = status < 400 ? '\x1b[32m' : status < 500 ? '\x1b[33m' : '\x1b[31m';
+    const reset = '\x1b[0m';
     if (path === '/health') return;
     console.log(`${color}${method}${reset} ${path} → ${color}${status}${reset} (${duration}ms)`);
   });
@@ -77,19 +77,19 @@ app.use((req, res, next) => {
 });
 
 // ─── API Routes (rate limiters applied per group) ───
-app.use('/api/events',     eventLimiter,     eventsRouter);
-app.use('/api/analytics',  analyticsLimiter, analyticsRouter);
+app.use('/api/events', eventLimiter, eventsRouter);
+app.use('/api/analytics', analyticsLimiter, analyticsRouter);
 app.use('/api/governance', analyticsLimiter, governanceRouter);
-app.use('/api/sync',       eventLimiter,     syncRouter);
+app.use('/api/sync', eventLimiter, syncRouter);
 
 // ─── Health Check ───
 app.get('/health', (_, res) => {
   try {
     const stats = getDBStats();
     res.json({
-      status:   'ok',
-      time:     new Date().toISOString(),
-      uptime:   Math.round(process.uptime()),
+      status: 'ok',
+      time: new Date().toISOString(),
+      uptime: Math.round(process.uptime()),
       database: stats
     });
   } catch (err) {
@@ -101,8 +101,8 @@ app.get('/health', (_, res) => {
 app.use((req, res) => {
   res.status(404).json({
     error: 'Not found',
-    path:  req.path,
-    hint:  'Available routes: /health, /api/events, /api/analytics, /api/governance, /api/sync'
+    path: req.path,
+    hint: 'Available routes: /health, /api/events, /api/analytics, /api/governance, /api/sync'
   });
 });
 
@@ -110,7 +110,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error(`\x1b[31m❌ Error on ${req.method} ${req.path}:\x1b[0m`, err.message);
   res.status(err.status || 500).json({
-    error:   'Internal server error',
+    error: 'Internal server error',
     message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message
   });
 });

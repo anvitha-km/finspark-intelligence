@@ -3,7 +3,7 @@ node_modules/
 *.pptx
 *.ppt
 ~$*
-server/finspark.db
+# server/finspark.db (Uncommented to push seed data to Railway)
 *.db-shm
 *.db-wal
 .env

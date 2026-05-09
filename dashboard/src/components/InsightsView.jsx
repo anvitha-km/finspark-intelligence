@@ -7,7 +7,7 @@ import {
 import API_URL from '../config';
 const API = API_URL;
 
-export default function InsightsView() {
+export default function InsightsView({ user }) {
   const [licenseData, setLicenseData]   = useState([]);
   const [funnelData,  setFunnelData]    = useState([]);
   const [trendData,   setTrendData]     = useState([]);
@@ -16,10 +16,13 @@ export default function InsightsView() {
   const [error,       setError]         = useState(null);
 
   useEffect(() => {
+    const tenantParam = user?.role === 'tenant' ? `?tenantId=${user.tenant}` : '';
+    const trendParam  = user?.role === 'tenant' ? `&tenantId=${user.tenant}` : '';
+
     Promise.all([
       fetch(`${API}/api/analytics/license-usage`).then(r => r.json()),
-      fetch(`${API}/api/analytics/funnel/loan-origination`).then(r => r.json()),
-      fetch(`${API}/api/analytics/weekly-trend?weeks=8`).then(r => r.json()),
+      fetch(`${API}/api/analytics/funnel/loan-origination${tenantParam}`).then(r => r.json()),
+      fetch(`${API}/api/analytics/weekly-trend?weeks=8${trendParam}`).then(r => r.json()),
     ])
       .then(([l, f, t]) => {
         setLicenseData(l.features || []);

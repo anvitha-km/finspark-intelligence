@@ -35,6 +35,34 @@ const USERS = [
     name:     'Tenant A Manager',
     tenant:   'tenant_a'
   },
+  {
+    email:    'tenant_b@finspark.io',
+    password: 'tenantb123',
+    role:     'tenant',
+    name:     'Tenant B Manager',
+    tenant:   'tenant_b'
+  },
+  {
+    email:    'tenant_c@finspark.io',
+    password: 'tenantc123',
+    role:     'tenant',
+    name:     'Tenant C Manager',
+    tenant:   'tenant_c'
+  },
+  {
+    email:    'tenant_d@finspark.io',
+    password: 'tenantd123',
+    role:     'tenant',
+    name:     'Tenant D Manager',
+    tenant:   'tenant_d'
+  },
+  {
+    email:    'tenant_e@finspark.io',
+    password: 'tenante123',
+    role:     'tenant',
+    name:     'Tenant E Manager',
+    tenant:   'tenant_e'
+  },
 ];
 
 export default function LoginView({ onLogin }) {
@@ -63,7 +91,11 @@ export default function LoginView({ onLogin }) {
   const fillDemo = (type) => {
     if (type === 'admin')  { setEmail('admin@finspark.io');    setPassword('admin123');    }
     if (type === 'viewer') { setEmail('viewer@finspark.io');   setPassword('viewer123');   }
-    if (type === 'tenant') { setEmail('tenant_a@finspark.io'); setPassword('tenanta123');  }
+    if (type === 'tenant_a') { setEmail('tenant_a@finspark.io'); setPassword('tenanta123');  }
+    if (type === 'tenant_b') { setEmail('tenant_b@finspark.io'); setPassword('tenantb123');  }
+    if (type === 'tenant_c') { setEmail('tenant_c@finspark.io'); setPassword('tenantc123');  }
+    if (type === 'tenant_d') { setEmail('tenant_d@finspark.io'); setPassword('tenantd123');  }
+    if (type === 'tenant_e') { setEmail('tenant_e@finspark.io'); setPassword('tenante123');  }
     setError('');
   };
 
@@ -179,9 +211,13 @@ export default function LoginView({ onLogin }) {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {[
-              { type: 'admin',  label: 'Admin',           desc: 'All tabs + Governance',      color: '#6366f1' },
-              { type: 'viewer', label: 'Viewer',          desc: 'Read-only, no Governance',   color: '#06b6d4' },
-              { type: 'tenant', label: 'Tenant Manager',  desc: 'Filtered to tenant_a only',  color: '#10b981' },
+              { type: 'admin',    label: 'Admin',           desc: 'All tabs + Governance',      color: '#6366f1' },
+              { type: 'viewer',   label: 'Viewer',          desc: 'Read-only, no Governance',   color: '#06b6d4' },
+              { type: 'tenant_a', label: 'Tenant A Manager',desc: 'Filtered to tenant_a only',  color: '#10b981' },
+              { type: 'tenant_b', label: 'Tenant B Manager',desc: 'Filtered to tenant_b only',  color: '#f59e0b' },
+              { type: 'tenant_c', label: 'Tenant C Manager',desc: 'Filtered to tenant_c only',  color: '#ef4444' },
+              { type: 'tenant_d', label: 'Tenant D Manager',desc: 'Filtered to tenant_d only',  color: '#8b5cf6' },
+              { type: 'tenant_e', label: 'Tenant E Manager',desc: 'Filtered to tenant_e only',  color: '#ec4899' },
             ].map(u => (
               <button key={u.type} onClick={() => fillDemo(u.type)}
                 style={{

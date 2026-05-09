@@ -5,6 +5,7 @@ import LicenseView    from './components/LicenseView';
 import GovernanceView from './components/GovernanceView';
 import InsightsView   from './components/InsightsView';
 import ComparisonView from './components/ComparisonView';
+import SystemStatusView from './components/SystemStatusView';
 import LoginView      from './components/LoginView';
 
 /**
@@ -13,11 +14,13 @@ import LoginView      from './components/LoginView';
  * - viewer: all tabs except Governance
  * - tenant: all tabs except Governance, data filtered to their tenant
  */
-const ALL_TABS = ['Heatmap', 'Funnel', 'License Usage', 'Governance', 'Insights', 'Comparison'];
+const ALL_TABS = ['Heatmap', 'Funnel', 'License Usage', 'Governance', 'Insights', 'Comparison', 'System Status'];
 
 function getTabsForRole(role) {
   if (role === 'admin') return ALL_TABS;
-  return ALL_TABS.filter(t => t !== 'Governance');
+  if (role === 'viewer') return ALL_TABS.filter(t => t !== 'Governance');
+  // Strict tenant isolation: they cannot see Governance, Comparison, License Usage, or System Status
+  return ['Heatmap', 'Funnel', 'Insights'];
 }
 
 export default function App() {
@@ -127,12 +130,13 @@ export default function App() {
       {/* ─── Content ─── */}
       <main className="content-area">
         <div className="fade-in" key={activeTab}>
-          {activeTab === 'Heatmap'       && <HeatmapView />}
-          {activeTab === 'Funnel'        && <FunnelView />}
+          {activeTab === 'Heatmap'       && <HeatmapView user={user} />}
+          {activeTab === 'Funnel'        && <FunnelView user={user} />}
           {activeTab === 'License Usage' && <LicenseView />}
           {activeTab === 'Governance'    && <GovernanceView />}
-          {activeTab === 'Insights'      && <InsightsView />}
+          {activeTab === 'Insights'      && <InsightsView user={user} />}
           {activeTab === 'Comparison'    && <ComparisonView />}
+          {activeTab === 'System Status' && <SystemStatusView />}
         </div>
       </main>
 
