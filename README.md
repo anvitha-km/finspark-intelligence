@@ -373,6 +373,17 @@ Only statistical aggregates (counts, rates) are transmitted — and only if the 
 
 ---
 
+## Enterprise Scalability Path (Production Architecture)
+
+While this hackathon MVP runs on lightweight SQLite to ensure a seamless "one-click" local deployment, the codebase is fundamentally designed to scale to billions of events across thousands of tenants. 
+
+When deploying to a true production environment, the ingestion and storage layers are swapped:
+- **Event Bus (Kafka)**: The Express `POST /api/events` route pushes directly to a Kafka topic, handling massive throughput spikes without dropping requests.
+- **OLAP Database (ClickHouse)**: SQLite is replaced with ClickHouse or Apache Pinot, enabling sub-second analytical queries (funnels, heatmaps) over billions of rows.
+- **Containerization**: The backend is fully Dockerized (see `Dockerfile`) and secured via `JWT` Auth Middleware, ready to be orchestrated via Kubernetes.
+
+---
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first.

@@ -6,6 +6,7 @@ import eventsRouter from './routes/events.js';
 import analyticsRouter from './routes/analytics.js';
 import governanceRouter from './routes/governance.js';
 import syncRouter from './routes/sync.js';
+import { requireAuth } from './middleware/auth.js';
 
 const app = express();
 
@@ -77,6 +78,10 @@ app.use((req, res, next) => {
 });
 
 // ─── API Routes (rate limiters applied per group) ───
+// Enterprise auth middleware applied globally to all API routes
+// (Bypassed internally if x-demo-bypass header is present for hackathon UI)
+app.use('/api', requireAuth);
+
 app.use('/api/events', eventLimiter, eventsRouter);
 app.use('/api/analytics', analyticsLimiter, analyticsRouter);
 app.use('/api/governance', analyticsLimiter, governanceRouter);

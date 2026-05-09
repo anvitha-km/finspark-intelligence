@@ -60,9 +60,9 @@ export default function InsightsView({ user }) {
       action: 'Review in License Usage'
     },
     {
-      type: 'warning', icon: '🟡',
-      title: 'Journey drop-off critical point',
-      description: `Biggest drop in loan origination is at "${biggestDrop.label}" — ${biggestDrop.drop} sessions lost here. Fixing this could recover ~${Math.round(biggestDrop.drop * 0.4)} completions per cycle.`,
+      type: 'danger', icon: '💸',
+      title: 'Lost Revenue (ROI Impact)',
+      description: `Biggest drop in loan origination is at "${biggestDrop.label}" (${biggestDrop.drop} sessions lost). Assuming a $2,500 average loan value and a 4% final approval rate, fixing this UX friction recovers ~$${(biggestDrop.drop * 2500 * 0.04).toLocaleString()} in lost revenue per cycle.`,
       action: 'Prioritise UX improvement'
     },
     {
