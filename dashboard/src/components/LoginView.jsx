@@ -103,12 +103,13 @@ export default function LoginView({ onLogin }) {
     <div style={{
       minHeight: '100vh', width: '100vw',
       background: 'var(--bg-primary)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
       padding: '40px 0',
       boxSizing: 'border-box',
+      overflowY: 'auto',
       fontFamily: 'Inter, sans-serif'
     }}>
-      <div style={{ width: '100%', maxWidth: 420, padding: '0 24px' }}>
+      <div style={{ width: '100%', maxWidth: 420, padding: '0 24px', margin: 'auto' }}>
 
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
