@@ -101,7 +101,7 @@ export default function LoginView({ onLogin }) {
 
   return (
     <div style={{
-      minHeight: '100vh', width: '100vw',
+      height: '100vh', width: '100vw',
       background: 'var(--bg-primary)',
       display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
       padding: '40px 0',
