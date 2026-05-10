@@ -405,6 +405,10 @@ router.get('/weekly-trend', (req, res) => {
 router.post('/seed-demo', (req, res) => {
   try {
     const db = getDB();
+    
+    // Clear old data to prevent cumulative corruption
+    db.prepare('DELETE FROM events').run();
+    
     const insert = db.prepare(`
       INSERT OR IGNORE INTO events
         (event_id, tenant_id, feature_id, channel, user_id,
@@ -432,7 +436,6 @@ router.post('/seed-demo', (req, res) => {
       ['loan-origination.document-upload', 310, ['invoked','completed','abandoned'],                      'loan-origination'],
       ['loan-origination.credit-check',    240, ['invoked','completed','completed'],                      'loan-origination'],
       ['loan-origination.approval',        160, ['completed','completed','abandoned'],                    'loan-origination'],
-      ['loan-origination.disbursement',    140, ['completed','completed','completed'],                    'loan-origination'],
       ['kyc.aadhaar',                      380, ['invoked','completed','completed'],                      'kyc'],
       ['kyc.pan-verify',                   360, ['invoked','completed','completed'],                      'kyc'],
       ['payments.emi-dashboard',           450, ['invoked','invoked','invoked'],                          'payments'],
@@ -457,6 +460,7 @@ router.post('/seed-demo', (req, res) => {
 
       // LOW ROI — rarely used, clear churn risk
       ['loan-origination.esign',            25, ['completed','abandoned','abandoned','abandoned'],        'loan-origination'],
+      ['loan-origination.disbursement',     15, ['completed','completed','completed'],                    'loan-origination'],
       ['kyc.rekyc',                         18, ['invoked','abandoned','abandoned'],                      'kyc'],
       ['kyc.fatca',                         12, ['invoked','abandoned','abandoned','abandoned'],          'kyc'],
       ['payments.foreclosure',              15, ['invoked','abandoned','abandoned'],                      'payments'],
