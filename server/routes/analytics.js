@@ -517,6 +517,15 @@ router.post('/seed-demo', (req, res) => {
     });
 
     const seeded = seedMany();
+    
+    // Seed the sync_aggregates table with REAL counts so the System Status tab is accurate
+    db.prepare('DELETE FROM sync_aggregates').run();
+    const insertSync = db.prepare(`INSERT INTO sync_aggregates (tenant_hash, payload, received_at, feature_count, total_events) VALUES (?, '{}', datetime('now'), 35, ?)`);
+    ['tenant_a', 'tenant_b', 'tenant_c'].forEach(t => {
+      const c = db.prepare('SELECT COUNT(*) as cnt FROM events WHERE tenant_id = ?').get(t).cnt;
+      if (c > 0) insertSync.run(t, c);
+    });
+
     res.json({
       success: true,
       seeded,
