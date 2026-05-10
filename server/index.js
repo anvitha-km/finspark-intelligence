@@ -146,5 +146,22 @@ initDB().then(() => {
     console.log('║  Analytics:  300 req/min/IP (relaxed)               ║');
     console.log('╚══════════════════════════════════════════════════════╝');
     console.log('');
+    
+    // Auto-seed if running on a fresh database (like Railway first deploy)
+    const stats = getDBStats();
+    if (stats.totalEvents === 0) {
+      console.log('🌱 Database is empty. Auto-seeding 10 weeks of demo data...');
+      fetch(`http://localhost:${PORT}/api/analytics/seed-demo`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-demo-bypass': 'hackathon-admin'
+        }
+      }).then(r => r.json()).then(resJson => {
+        console.log(`✅ Auto-seed complete: ${resJson.seeded} events seeded.`);
+      }).catch(err => {
+        console.error('❌ Failed to auto-seed:', err);
+      });
+    }
   });
 });
